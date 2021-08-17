@@ -13,7 +13,7 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         }
 
         [Fact]
-        public void Sensor_value_passes_lower_threshold()
+        public void Alarm_is_on_if_sensor_value_passes_lower_threshold()
         {
             var lowPressureThreshold = 10;
             var sensorValue = lowPressureThreshold - 1;
@@ -34,7 +34,7 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         }
 
         [Fact]
-        public void Alarm_count_increases_if_sensor_value_passes_upper_threshold()
+        public void Alarm_count_increases_by_one_if_sensor_value_passes_upper_threshold()
         {
             var highPressureThreshold = 10;
             var expectedAlarmCount = 1;
