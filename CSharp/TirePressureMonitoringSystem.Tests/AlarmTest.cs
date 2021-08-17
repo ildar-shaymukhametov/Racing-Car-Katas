@@ -16,10 +16,13 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         public void Sensor_value_passes_lower_threshold()
         {
             var lowPressureThreshold = 10;
+            var sensorValue = lowPressureThreshold - 1;
             var sensor = Substitute.For<ISensor>();
-            sensor.PopNextPressurePsiValue().Returns(lowPressureThreshold - 1);
+            sensor.PopNextPressurePsiValue().Returns(sensorValue);
             Alarm alarm = CreateSut(sensor, lowPressureThreshold);
+
             alarm.Check();
+
             Assert.True(alarm.AlarmOn);
         }
 
@@ -27,10 +30,13 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         public void Alarm_is_on_if_sensor_value_passes_upper_threshold()
         {
             var highPressureThreshold = 10;
+            var sensorValue = highPressureThreshold + 1;
             var sensor = Substitute.For<ISensor>();
-            sensor.PopNextPressurePsiValue().Returns(highPressureThreshold + 1);
+            sensor.PopNextPressurePsiValue().Returns(sensorValue);
             Alarm alarm = CreateSut(sensor, highPressureThreshold: highPressureThreshold);
+
             alarm.Check();
+
             Assert.True(alarm.AlarmOn);
         }
 
