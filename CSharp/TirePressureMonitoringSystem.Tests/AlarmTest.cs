@@ -34,6 +34,20 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         }
 
         [Fact]
+        public void Alarm_count_increases_if_sensor_value_passes_upper_threshold()
+        {
+            var highPressureThreshold = 10;
+            var expectedAlarmCount = 1;
+            var sensorValue = highPressureThreshold + 1;
+            var sensor = StubSensor(sensorValue);
+            Alarm alarm = CreateSut(sensor, highPressureThreshold: highPressureThreshold);
+
+            alarm.Check();
+
+            Assert.Equal(expectedAlarmCount, alarm.AlarmCount);
+        }
+
+        [Fact]
         public void Alarm_is_on_if_sensor_value_passes_upper_threshold()
         {
             var highPressureThreshold = 10;
