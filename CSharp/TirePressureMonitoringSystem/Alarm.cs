@@ -33,5 +33,10 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         {
             get { return _alarmOn; }
         }
+
+        public long AlarmCount
+        {
+            get { return _alarmCount; }
+        }
     }
 }
