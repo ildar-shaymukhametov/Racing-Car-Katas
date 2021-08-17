@@ -8,7 +8,7 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         [Fact]
         public void Alarm_is_not_initially_on()
         {
-            Alarm alarm = new Alarm(default, default);
+            Alarm alarm = CreateSut();
             Assert.False(alarm.AlarmOn);
         }
 
@@ -18,9 +18,14 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
             var lowPressureThreshold = 10;
             var sensor = Substitute.For<ISensor>();
             sensor.PopNextPressurePsiValue().Returns(lowPressureThreshold - 1);
-            Alarm alarm = new Alarm(sensor, lowPressureThreshold);
+            Alarm alarm = CreateSut(sensor, lowPressureThreshold);
             alarm.Check();
             Assert.True(alarm.AlarmOn);
+        }
+
+        private static Alarm CreateSut(ISensor sensor = null, double lowPressureThreshold = default)
+        {
+            return new Alarm(sensor ?? Substitute.For<ISensor>(), lowPressureThreshold);
         }
     }
 }
