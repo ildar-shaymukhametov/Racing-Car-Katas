@@ -17,8 +17,7 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         {
             var lowPressureThreshold = 10;
             var sensorValue = lowPressureThreshold - 1;
-            var sensor = Substitute.For<ISensor>();
-            sensor.PopNextPressurePsiValue().Returns(sensorValue);
+            var sensor = StubSensor(sensorValue);
             Alarm alarm = CreateSut(sensor, lowPressureThreshold);
 
             alarm.Check();
@@ -31,8 +30,7 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         {
             var highPressureThreshold = 10;
             var sensorValue = highPressureThreshold + 1;
-            var sensor = Substitute.For<ISensor>();
-            sensor.PopNextPressurePsiValue().Returns(sensorValue);
+            var sensor = StubSensor(sensorValue);
             Alarm alarm = CreateSut(sensor, highPressureThreshold: highPressureThreshold);
 
             alarm.Check();
@@ -43,6 +41,13 @@ namespace TDDMicroExercises.TirePressureMonitoringSystem
         private static Alarm CreateSut(ISensor sensor = null, double lowPressureThreshold = default, double highPressureThreshold = default)
         {
             return new Alarm(sensor ?? Substitute.For<ISensor>(), lowPressureThreshold, highPressureThreshold);
+        }
+
+        private static ISensor StubSensor(int sensorValue)
+        {
+            var sensor = Substitute.For<ISensor>();
+            sensor.PopNextPressurePsiValue().Returns(sensorValue);
+            return sensor;
         }
     }
 }
