@@ -1,46 +1,35 @@
-using System.IO;
+using System;
 
 namespace TDDMicroExercises.UnicodeFileToHtmlTextConverter
 {
+    public interface IFileReader
+    {
+        string Read(string filename);
+    }
+
     public class UnicodeFileToHtmlTextConverter
     {
-        private string _fullFilenameWithPath;
+        private readonly IFileReader fileReader;
 
-        public UnicodeFileToHtmlTextConverter(string fullFilenameWithPath)
+        public UnicodeFileToHtmlTextConverter(IFileReader fileReader)
         {
-            _fullFilenameWithPath = fullFilenameWithPath;
+            this.fileReader = fileReader;
         }
 
-        public string GetFilename()
+        public string ConvertToHtml(string fullFilenameWithPath)
         {
-            return _fullFilenameWithPath;
-        }
-
-        public string ConvertToHtml()
-        {
-            using (TextReader unicodeFileStream = File.OpenText(_fullFilenameWithPath))
-            {
-                string html = string.Empty;
-
-                string line = unicodeFileStream.ReadLine();
-                while (line != null)
-                {
-                    html += HttpUtility.HtmlEncode(line);
-                    html += "<br />";
-                    line = unicodeFileStream.ReadLine();
-                }
-
-                return html;
-            }
+            var text = fileReader.Read(fullFilenameWithPath);
+            var html = HttpUtility.HtmlEncode(text).Replace(Environment.NewLine, "<br />");
+            return html;
         }
     }
     class HttpUtility
     {
         public static string HtmlEncode(string line)
         {
+            line = line.Replace("&", "&amp;");
             line = line.Replace("<", "&lt;");
             line = line.Replace(">", "&gt;");
-            line = line.Replace("&", "&amp;");
             line = line.Replace("\"", "&quot;");
             line = line.Replace("\'", "&quot;");
             return line;
